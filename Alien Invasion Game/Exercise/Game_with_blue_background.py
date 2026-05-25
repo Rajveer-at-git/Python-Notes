@@ -2,7 +2,7 @@ import sys
 
 import pygame
 
-from settings import Settings
+from settings1 import Settings
 
 class Blue_game:
     """Overall class for managing overall game assets and behavior."""
