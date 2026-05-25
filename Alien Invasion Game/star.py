@@ -11,7 +11,7 @@ class Star(Sprite):
         screen_rect = ai_game.screen.get_rect()
 
         # Create a small rect for the star
-        size = randint(2, 5)
+        size = randint(2, 6)
         self.rect = pygame.Rect(0, 0, size, size)
 
         # Place it at a random position on screen
