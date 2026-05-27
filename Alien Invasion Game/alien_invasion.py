@@ -88,7 +88,7 @@ class AlienInvasion:
             # Move the ship to the left
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
-            # created shortcut for quitting the game by pressing q.
+            self.stats.save_high_score()
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
@@ -114,6 +114,8 @@ class AlienInvasion:
         self.settings.initialize_dynamic_settings()
         self.stats.reset_stats()
         self.sb.prep_score()
+        self.sb.prep_level()
+        self.sb.prep_ships()
         self.game_active = True
 
         # Get rid of any remaining bullets and aliens.
@@ -153,13 +155,19 @@ class AlienInvasion:
         )
 
         if collisions:
-            self.stats.score += self.settings.alien_points
+            for aliens in collisions.values():
+                self.stats.score += self.settings.alien_points * len(aliens)
             self.sb.prep_score()
+            self.sb.check_high_score()
 
         if not self.aliens:
             self.bullets.empty()
             self._create_fleet()
             self.settings.increase_speed()
+
+            # Increase level.
+            self.stats.level += 1
+            self.sb.prep_level()
 
     def _update_aliens(self):
         """Update the positions of all aliens in the fleet."""
@@ -214,8 +222,9 @@ class AlienInvasion:
     def _ship_hit(self):
         """Respond to the ship hit by the alien."""
         if self.stats.ships_left > 0:
-            # Decrement ships left
+            # Decrement ships_left, and update scoreboard
             self.stats.ships_left -= 1
+            self.sb.prep_ships()
 
             # Get rid of any remaining bullets or aliens
             self.bullets.empty()
