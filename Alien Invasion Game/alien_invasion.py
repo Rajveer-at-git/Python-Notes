@@ -8,7 +8,7 @@ from ship import Ship
 from bullet import Bullet
 from alien import Alien
 from star import Star
-from game_stats import Game_Stats
+from game_stats import GameStats
 from scoreboard import Scoreboard
 from button import Button
 
@@ -29,7 +29,7 @@ class AlienInvasion:
 
         # Create instance to store game statistics
         # and crate a scoreboard.
-        self.stats = Game_Stats(self)
+        self.stats = GameStats(self)
         self.sb = Scoreboard(self)
 
         self.stars = pygame.sprite.Group()
@@ -164,10 +164,14 @@ class AlienInvasion:
             self.bullets.empty()
             self._create_fleet()
             self.settings.increase_speed()
+            self.start_new_level()
 
-            # Increase level.
+
+    def start_new_level(self):
+            """Increase the level."""
             self.stats.level += 1
             self.sb.prep_level()
+
 
     def _update_aliens(self):
         """Update the positions of all aliens in the fleet."""
