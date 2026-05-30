@@ -23,7 +23,7 @@ My Python learning progress following the book **Python Crash Course (3rd Editio
 
 A classic arcade-style space shooter built with **Python** and **Pygame**.
 
-![Gameplay](Alien%20Invasion%20Game/gameplay.gif)
+![Gameplay](Alien%20Invasion%20Game/game_play.gif)
 
 ### Features
 - Fleet of aliens that move and drop toward the ship
