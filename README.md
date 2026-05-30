@@ -24,7 +24,6 @@ My Python learning progress following the book **Python Crash Course (3rd Editio
 A classic arcade-style space shooter built with **Python** and **Pygame**.
 
 ![Gameplay](Alien%20Invasion%20Game/gameplay.gif)
-> *Replace `gameplay.gif` with your recorded GIF using [ScreenToGif](https://www.screentogif.com/)*
 
 ### Features
 - Fleet of aliens that move and drop toward the ship
