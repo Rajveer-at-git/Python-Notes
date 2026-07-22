@@ -1,0 +1,14 @@
+{% extends "blogs/base.html" %}
+
+{% block content %}
+    <p><a href="{% url 'blogs:blog' blog.id %}">{{ blog }}</a></p> {# url - tells django to look into my urls.py file #}
+
+    <p>Edit entry:</p>
+
+    <form action="{% url 'blogs:edit_post' post.id %}" method='post'> {# action dictates where data goes after user hit submit#}
+        {% csrf_token %}
+        {{ form.as_div }}
+        <button name="submit">Save changes</button>
+    </form>
+
+{% endblock content %}
