@@ -1,0 +1,17 @@
+{% extends "blogs/base.html" %}
+
+{% block content %}
+
+    <p><a href="{% url 'blogs:blog' blog.id %}">{{ blog }}</a></p>
+    {# url - tells django to look into my urls.py file #}
+    {# blogs:blog tells to look for the path in urls.py where path 'name=blog'#}
+    {# blog.id extracts the primary key no. of the data #}    
+
+    <p>Add a new entry:</p>
+    <form action="{% url 'blogs:new_post' blog.id %}" method='post'>
+        {% csrf_token %}
+        {{ form.as_div }}
+        <button name='submit'>Add Post</button>
+    </form>
+    
+{% endblock content %}
