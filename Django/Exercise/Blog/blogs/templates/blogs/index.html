@@ -1,0 +1,17 @@
+{% extends "blogs/base.html" %}
+
+{% block content %}
+    <h1>Welcome to the Blog</h1>
+    <p>This is the homepage.</p>
+    
+    <ul>
+      {% for blog in blogs %}
+        <li>
+          <a href="{% url 'blogs:blog' blog.id %}">{{ blog }}</a> {# blog.id extracts the primary key no. of the data #}
+        </li>
+      {% empty %}
+        <li>No blogs have been created yet.</li>
+      {% endfor %}
+      <a href="{% url 'blogs:new_blog' %}">Add a new blog</a>
+    </ul>
+{% endblock content %}
