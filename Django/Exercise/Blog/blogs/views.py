@@ -24,7 +24,11 @@ def new_blog(request):
         # POST data submitted; process data.
         form = BlogForm(data=request.POST)
         if form.is_valid():
-            form.save()
+            new_blog = form.save(commit=False)
+            # Assign the currently logged-in user as the owner
+            new_blog.owner = request.user
+            # save it to the database
+            new_blog.save()
         return redirect('blogs:index')
     # Display a blank or invalid form.
     context = {'form': form}
