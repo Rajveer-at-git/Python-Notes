@@ -1,6 +1,10 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.http import Http404
+
 from .models import Blog, Post
 from .forms import BlogForm, PostForm
+
 
 # view queries the database and pass that data to an HTML template.
 
@@ -10,6 +14,7 @@ def index(request):
     context = {'blogs': blogs}
     return render(request, 'blogs/index.html', context)
 
+@login_required
 def new_blog(request):
     """Add a new Blog."""
     if request.method != 'POST':
@@ -25,9 +30,11 @@ def new_blog(request):
     context = {'form': form}
     return render(request, 'blogs/new_blog.html', context)
 
+@login_required
 def new_post(request, blog_id): # blog_id is coming from urls.py --> int:<blog_id> part
     "Add a new Post for a particular Blog."
     blog = Blog.objects.get(id=blog_id)
+    check_topic_owner(blog, request)
 
     if request.method != 'POST':
         # No data submitted; create a blank form
@@ -46,11 +53,13 @@ def new_post(request, blog_id): # blog_id is coming from urls.py --> int:<blog_i
     context = {'blog': blog, 'form': form}
     return render(request, 'blogs/new_post.html', context)
 
+@login_required
 def edit_post(request, post_id):
     """Edit an existing post."""
     # Fetch the specific post and its associated blog
     post = Post.objects.get(id=post_id)
     blog = post.blog
+    check_topic_owner(blog, request)
 
     if request.method != 'POST':
         # Initial request; pre-fill the form with the current post's data
@@ -67,7 +76,7 @@ def edit_post(request, post_id):
     context = {'post': post, 'blog': blog, 'form': form}
     return render(request, 'blogs/edit_post.html', context)
 
-def blog(request, blog_id):
+def blog(request, blog_id): 
     """The blog page showing all the posts made on a blog."""
     blog = Blog.objects.get(id=blog_id)
     # Fetch all posts related to this specific blog
@@ -76,3 +85,9 @@ def blog(request, blog_id):
     context = {'blog': blog, 'posts': posts}
     # Send to the template
     return render(request, 'blogs/blog.html', context)
+
+# Helper function
+def check_topic_owner(blog, request):
+    """Make sure the blog belongs to the current user."""
+    if blog.owner != request.user:
+        raise Http404
