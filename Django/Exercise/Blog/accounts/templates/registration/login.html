@@ -1,18 +1,14 @@
 {% extends 'blogs/base.html' %}
+{% load django_bootstrap5 %}
 
 {% block content %}
+  {% if form.errors %}
+    <p class="text-danger">Your username and password didn't match. Please try again.</p>
+  {% endif %}
 
-    {% if form.errors %}
-        <p>Your username and password didn't match. Please try again.</p>
-    {% endif %}
-
-
-    <form action="{% url 'accounts:login' %}" method='post'>    
-        {# here accounts is the app_name defined in urls.py and login is the name of URL pattern provided by Djangos default authentication system #}
-        {% csrf_token %}
-        {{ form.as_div }}
-
-        <button name="submit">Log in</button>
-    </form>
-
+  <form action="{% url 'accounts:login' %}" method="post" class="form">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% bootstrap_button button_type="submit" content="Log in" %}
+  </form>
 {% endblock content %}
